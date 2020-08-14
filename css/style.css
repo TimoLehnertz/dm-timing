@@ -1,0 +1,40 @@
+*{
+}
+
+body{
+    padding-left: 20%;
+    padding-right: 12%;
+    background-color: #DDD;
+}
+
+#eingabefeld{
+    float: left;
+    width: 300px;
+}
+
+.form input{
+    float: right;
+}
+
+#form{
+    display: inline-block;
+}
+
+.form div{
+    padding: 3px;
+    border-top: 2px solid black;
+}
+
+#ausgabefeld{
+    float: right;
+}
+
+#rundenÜbrig{
+    font-size: 300pt;
+    background-color: cadetblue;
+}
+
+table td{
+    border: 1px solid black;
+    font-size: 17pt;
+}
