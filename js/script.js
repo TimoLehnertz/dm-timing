@@ -239,7 +239,7 @@ function loadRace(raceId){
     showStats(rennen[raceId], savedRaceTable);
 }
 
-body.onkeydown = keyDown;
+body.onkeydown = keyDown; 
 savedRace.onmousedown = function (){
     event.stopPropagation();
 }
