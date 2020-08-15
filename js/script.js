@@ -32,20 +32,44 @@ class Rennen{
         this.vorgabeDurchschittRunde;
         this.vorgabeErsteRunde;
         this.restMeter;
+        this.runden;
+    }
+    getInfoHtml(){
+        let i = 0;
+        let info = "<table><tr>";
+        for (const key in this) {
+            if (this.hasOwnProperty(key) && i > 0) {
+                //const element = object[key];
+                info += "<td>" + key + "</td>";
+            }
+            i++;
+        }
+        info += "</tr><tr>";
+        i = 0;
+        for (const key in this) {
+            if (this.hasOwnProperty(key) && i > 0) {
+                info += "<td>" + this[key] + "</td>";
+            }
+            i++;
+        }
+        info += "</tr></table>"
+        return info
     }
 }
 
+/*
+
+*/
 function calcTip(rennen){
     let sum = 0;
     for(let i = 0; i < rennen.measurements.length; i++){
         sum += rennen.measurements[i] - rennen.measurements[Math.max(0, i - 1)];
     }
     let metersLeft = (rennen.streckenlänge - ((rennen.measurements.length - 1) * rennen.rundenlänge + rennen.restMeter));
-    console.log(metersLeft);
 }
 
 function getSol(lap, rennen){
-    return (lap == 0 ? rennen.vorgabeErsteRunde : rennen.vorgabeDurchschittRunde) * 1000;
+    return (lap < 2 ? rennen.vorgabeErsteRunde : rennen.vorgabeDurchschittRunde) * 1000;
 }
 
 function measurement(e){
@@ -76,18 +100,23 @@ function measurement(e){
 
 function updateScreen(){
     rundenÜbrig.innerText = lapsLeft;
-    showStats(jetztRennen);
+    showStats(jetztRennen, result);
+}
+
+function grayInputOut(gray){
+    for(child of document.getElementById("eingabefeld").childNodes){
+        for (const childChild of child.childNodes) {
+            childChild.disabled = gray;
+        }
+    }
 }
 
 function start(){
+    grayInputOut(true);
     lapsLeft = runden.value;
     measumentsTaken = 0;
     updateScreen();
     started = true;
-    /*for(child of document.getElementById("eingabefeld").childNodes){
-        child.childNodes[0].disabled = "disabled";
-        console.log(child);
-    }*/
     jetztRennen = new Rennen();
     jetztRennen.sportler = sportlerName.value;
     jetztRennen.date = Date.now();
@@ -99,35 +128,40 @@ function start(){
     jetztRennen.vorgabeDurchschittRunde = durchschittZeit.value;
     jetztRennen.vorgabeErsteRunde = ersteRundeSek.value;
     jetztRennen.restMeter = restMeter.value;
+    jetztRennen.runden = runden.value;
 }
 
 function finsish(){
     rennen.push(jetztRennen);
-    console.log(jetztRennen);
     alert("Rennen gespeichert");
     reset();
 }
 
 function reset(){
+    grayInputOut(false);
     started = false;
     measumentsTaken = 0;
     lapsLeft = runden.value;
     updateScreen();
 }
 
-function showStats(rennen){
+function showStats(rennen, table){
     if(rennen == undefined){
         return;
     }
-    result.innerHTML = "<tr><td>Runde</td><td>Zeitpunkt</td><td>Zeit</td><td>sol</td><td>plus minus</td></tr>";
-    for(let i = 0; i < rennen.measurements.length; i++){
-        
-        let plus = (rennen.measurements[i] - rennen.measurements[Math.max(0, i - 1)]) - getSol(i, rennen);        
-        result.innerHTML += "<tr><td>" + i + "</td>"+
-        "<td>" + millisToMinutesAndSeconds(rennen.measurements[i]) + "</td>"+
-        "<td>" + millisToMinutesAndSeconds(rennen.measurements[i] - rennen.measurements[Math.max(0, i - 1)]) + "</td>"+
-        "<td>" + millisToMinutesAndSeconds(getSol(i, rennen)) + "</td>"+
-        (plus < 0 ? "<td style='background-color: green;'>-" : "<td style='background-color: red;'>") + millisToMinutesAndSeconds(plus) + "</td></tr>";
+    table.innerHTML = "<tr><td>Durchfahrt</td><td>Zeitpunkt</td><td>Zeit</td><td>sol</td><td>plus minus</td></tr>";
+    
+    for(let i = 1; i - 1 < rennen.runden; i++){
+        if(i < rennen.measurements.length){
+            let plus = (rennen.measurements[i] - rennen.measurements[Math.max(0, i - 1)]) - getSol(i, rennen);        
+            table.innerHTML += "<tr><td>" + i + "</td>"+
+            "<td>" + millisToMinutesAndSeconds(rennen.measurements[i] - rennen.measurements[0]) + "</td>"+
+            "<td>" + millisToMinutesAndSeconds(rennen.measurements[i] - rennen.measurements[Math.max(0, i - 1)]) + "</td>"+
+            "<td>" + millisToMinutesAndSeconds(getSol(i, rennen)) + "</td>"+
+            (plus < 0 ? "<td style='background-color: green;'>-" : "<td style='background-color: red;'>") + millisToMinutesAndSeconds(plus) + "</td></tr>";
+        } else{
+            table.innerHTML += "<tr><td>" + i + "</td><td></td><td></td><td></td><td></td></tr>";
+        }
     }
 }
 
@@ -135,11 +169,21 @@ function millisToMinutesAndSeconds(millis) {
     millis = Math.abs(millis);
     let minutes = Math.floor(millis / 60000);
     let seconds = ((millis % 60000) / 1000).toFixed(0);
-    return minutes + ":" + (seconds < 10 ? '0' : '') + seconds + ((millis % 1000) < 99 ? ((millis % 1000) < 9 ? ".00" : ".0") : ".") + parseInt(millis % 1000);
+    return minutes + ":" + (seconds < 10 ? '0' : '') + seconds + ((millis % 1000) < 100 ? ((millis % 1000) < 10 ? ".00" : ".0") : ".") + parseInt(millis % 1000);
+}
+
+function loadRace(raceId){
+    if(rennen.length == 0){
+        savedRace.value = 0;
+        return;
+    }
+    raceId = Math.max(0, Math.min(rennen.length - 1, raceId));
+    savedRace.value = raceId;
+    savedRaceInfo.innerHTML = rennen[raceId].getInfoHtml();
+    showStats(rennen[raceId], savedRaceTable);
 }
 
 body.onkeydown = measurement;
 reset.onkeydown = measurement;
 
 change();
-console.log(millisToMinutesAndSeconds(61011));
