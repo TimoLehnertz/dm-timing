@@ -7,67 +7,78 @@
         <link href="css/style.css" rel="stylesheet" media="screen">
     </head>
     <body id="body">
-        <h1>DM Timing</h1>
-        <form id="form">
-            <div id="eingabefeld"  class="form">
-                <div>
-                    <label for="sportlerName">Sportler Name:</label>
-                    <input type="text" id="sportlerName" onchange="change();" value="Mustermann"></input>
+        <h1 id="title">DM Timing</h1>
+        <article id="input">
+            <form id="form">
+                <div id="eingabefeld"  class="form">
+                    <div>
+                        <label for="sportlerName">Sportler Name:</label>
+                        <input type="text" id="sportlerName" onchange="change();" value="Mustermann"></input>
+                    </div>
+                    <div>
+                        <label for="streckenlänge">Streckenlänge:</label>
+                        <input type="number" id="streckenlänge" onchange="change();" value="3000"></input>
+                    </div>
+                    <div>
+                        <label for="rundenlänge">rundenlänge:</label>
+                        <input type="number" id="rundenlänge" onchange="change();" value="304"></input>
+                    </div>
+                    <div>
+                        <label for="Vorgabezeit">Vorgabezeit:</label>min:
+                        <input type="number" id="VorgabezeitMin" onchange="change();" value="5"></input>sek:
+                        <input type="number" id="VorgabezeitSek" onchange="change();" value="0"></input>
+                    </div>
+                    <div>
+                        <label for="startzugabe">startzugabe:</label>
+                        <input type="number" id="startzugabe" onchange="change();" value="2"></input>sek
+                    </div>
                 </div>
-                <div>
-                    <label for="streckenlänge">Streckenlänge:</label>
-                    <input type="number" id="streckenlänge" onchange="change();" value="3000"></input>
+                <div id="ausgabefeld" class="form">
+                    <div>
+                        <label for="runden">runden:</label>
+                        <input type="number" id ="runden" disabled="disabled"></input>
+                    </div>
+                    <div>
+                        <label for="restMeter">rest meter:</label>
+                        <input type="number" id="restMeter" disabled="disabled"></input>
+                    </div>
+                    <div>
+                        <label for="kmh">kmh:</label>
+                        <input type="number" id="kmh"  disabled="disabled"></input>
+                    </div>
+                    <div>
+                        <label for="gesSek">gesSek:</label>
+                        <input type="number" id="gesSek" disabled="disabled"></input>
+                    </div>
+                    <div>
+                        <label for="durchschittZeit">standart runde sek:</label>
+                        <input type="number" id="durchschittZeit"  disabled="disabled"></input>
+                    </div>
+                    <div>
+                        <label for="ersteRundeSek">erste runde sek:</label>
+                        <input type="number" id="ersteRundeSek"  disabled="disabled"></input>
+                    </div>
                 </div>
-                <div>
-                    <label for="rundenlänge">rundenlänge:</label>
-                    <input type="number" id="rundenlänge" onchange="change();" value="304"></input>
-                </div>
-                <div>
-                    <label for="Vorgabezeit">Vorgabezeit:</label>min:
-                    <input type="number" id="VorgabezeitMin" onchange="change();" value="5"></input>sek:
-                    <input type="number" id="VorgabezeitSek" onchange="change();" value="0"></input>
-                </div>
-                <div>
-                    <label for="startzugabe">startzugabe:</label>
-                    <input type="number" id="startzugabe" onchange="change();" value="2"></input>sek
-                </div>
-            </div>
-            <div id="ausgabefeld" class="form">
-                <div>
-                    <label for="runden">runden:</label>
-                    <input type="number" id ="runden" disabled="disabled"></input>
-                </div>
-                <div>
-                    <label for="restMeter">rest meter:</label>
-                    <input type="number" id="restMeter" disabled="disabled"></input>
-                </div>
-                <div>
-                    <label for="kmh">kmh:</label>
-                    <input type="number" id="kmh"  disabled="disabled"></input>
-                </div>
-                <div>
-                    <label for="gesSek">gesSek:</label>
-                    <input type="number" id="gesSek" disabled="disabled"></input>
-                </div>
-                <div>
-                    <label for="durchschittZeit">standart runde sek:</label>
-                    <input type="number" id="durchschittZeit"  disabled="disabled"></input>
-                </div>
-                <div>
-                    <label for="ersteRundeSek">erste runde sek:</label>
-                    <input type="number" id="ersteRundeSek"  disabled="disabled"></input>
-                </div>
-            </div>
-        </form>
-        <div id="middle">
+            </form>
+        </article>
+        <article id="middle">
             <div id="rundenÜbrig">
-                space
+                start
             </div>
             <div id="plusMinus">
                 plus
             </div>
-        </div>
-        <table id="result"></table>
+
+        </article>
+        <article>
+            <table id="result"></table>
+        </article>
+        <article>
+            <label for="savedRace">letzte Rennen</label>
+            <input id="savedRace" type="number" onchange="loadRace(savedRace.value)">
+            <div id="savedRaceInfo"></div>
+            <table id="savedRaceTable"></table>
+        </article>
         <script src="js/script.js"></script>
     </body>
 </html>

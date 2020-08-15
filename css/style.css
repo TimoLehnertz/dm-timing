@@ -1,10 +1,30 @@
 *{
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 
 body{
-    padding-left: 20%;
-    padding-right: 12%;
+    padding: 0;
+    margin: 0;
     background-color: #DDD;
+}
+
+#input{
+    padding-top: 10vh;
+}
+
+h1{
+    background-color: #fff;
+    border-bottom: black 2px solid;
+    text-align: center;
+    margin-top: 0;
+    position: fixed;
+    width: 100vw;
+    height: 10vh;
+    animation: fadeInFromTop 1s;
+}
+
+.fadeOut{
+    animation: fadeOutToTop 1s forwards;
 }
 
 #eingabefeld{
@@ -30,11 +50,69 @@ body{
 }
 
 #rundenÜbrig{
-    font-size: 300pt;
-    background-color: cadetblue;
+    font-size: 500pt;
+    float: left;
+    width: 30vw;
+    border-right: black 10px solid;
+    margin: 0;
+}
+
+#plusMinus{
+    color: white;
+    margin-top: 5vh;
+    font-size: 170pt;
+    margin-left: 35vw;
+}
+
+#plusMinus span{
+    font-size: 100pt;
+}
+
+#middle{
+    padding: 0;
+    background-color: black;
+    width: 100vw;
+    height: 100vh;
+    border: 1px solid black;
+}
+
+table{
+    border-top: 5px solid chocolate;
+    padding-top: 10px;
+    display: inline;
+    border-collapse: collapse;
 }
 
 table td{
-    border: 1px solid black;
+    border-right: 2px solid black;
+    border-left: 2px solid black;
+    border-bottom: 1px solid #777;
+    padding: 5px;
     font-size: 17pt;
+    margin: 0;
+    border-collapse: collapse;
+}
+
+#savedRaceInfo{
+    font-size: 11pt;
+}
+
+article{
+    padding: 20px;
+    margin-bottom: 5vh;
+    background-color: #FFF;
+}
+
+@keyframes fadeInFromTop{
+    from{top: -50px; opacity: 0;}
+    to{
+        top: 0; opacity: 1;
+    }
+}
+
+@keyframes fadeOutToTop{
+    from{top: 0px; opacity: 1;}
+    to{
+        top: -100px; opacity: 0;
+    }
 }
