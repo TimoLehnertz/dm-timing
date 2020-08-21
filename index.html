@@ -66,6 +66,11 @@
                     <span id="triggerKey"></span>
                     <label for="enterFullscreen">Enter Fullscreen on start</label>
                     <input type="checkbox" id="enterFullscreen" onchange="enterFullscreenChanged()" checked="true">
+                    <p>Select way of triggering</p>
+                    <label for="local">Local keyboard</label>
+                    <input type="radio" id="local" name="triggering" checked="true">
+                    <label for="lichtschranke">Lichtschranke</label>
+                    <input type="radio" id="lichtschranke" name="triggering">
                 </div>
             </form>
         </article>
@@ -89,6 +94,7 @@
             <table id="savedRaceTable"></table>
             <button type="button" onclick="downloadTable()">Download Race</button>
         </article>
+        <script src="static/js/triggerInterface.js"></script>
         <script src="js/script.js"></script>
     </body>
 </html>

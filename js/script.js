@@ -30,7 +30,7 @@ function validateForm(){
                 } else{
                     iterator.style.border = "2px solid gray";
                 }
-            } 
+            }
         }
     }
     if(validated){
@@ -77,7 +77,7 @@ function keyDown(e){
 }
 
 function play() { 
-    var audio = new Audio("sounds/beep.wav"); 
+    var audio = new Audio("static/sounds/beep.wav"); 
     audio.play(); 
 } 
 
@@ -156,7 +156,6 @@ function calcTip(rennen){
 
     if(isNaN(tip) || rundenLeft < 1){
         tip = timeLeft;
-        console.log(timeLeft);
     }
 
     console.log("-------------");
@@ -179,7 +178,10 @@ function getSol(lap, rennen){
     return (lap < 2 ? rennen.vorgabeErsteRunde : rennen.vorgabeDurchschittRunde) * 1000;
 }
 
-function measurement(){
+function measurement(atTime){
+    if(atTime == undefined && document.getElementById("lichtschranke").checked){
+        return;
+    }
     play();
     //reset
     if(!started){
@@ -192,7 +194,14 @@ function measurement(){
     if(!(restMeter.value > 0 && measumentsTaken < 1)){
         lapsLeft--;
     }
-    jetztRennen.measurements.push(performance.now());
+    if(atTime == undefined && document.getElementById("local").checked){//(Local keypress)
+        jetztRennen.measurements.push(performance.now());
+        console.log("local trigger")
+    } else if(atTime != undefined){
+        jetztRennen.measurements.push(atTime);
+        console.log("ls trigger")
+    }
+    
     measumentsTaken++;
     updateScreen();
     calcTip(jetztRennen);
@@ -221,7 +230,6 @@ function grayInputOut(gray){
 
 function enterFullscreenChanged(){
     enterFullscreenOnStart = document.getElementById("enterFullscreen").checked;
-    console.log(enterFullscreenOnStart);
 }
 
 function start(){
@@ -285,7 +293,6 @@ function showStats(rennen, table){
             innerHTML += "<tr><td>" + i + "</td><td></td><td></td><td>" + millisToMinutesAndSeconds(getSol(i, rennen)) + "</td><td></td></tr>";
         }
     }
-    console.log(innerHTML);
     table.innerHTML = innerHTML;
 }
 
@@ -385,6 +392,8 @@ function exportTableToExcel(tableID, filename = ''){
         downloadLink.click();
     }
 }
+
+onNewtriggger(function(csv){measurement(csv[csv.length - 2]);});
 
   var keyboardMap = [
     "", // [0]
