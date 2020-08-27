@@ -73,6 +73,8 @@ function keyDown(e){
         document.getElementById("readyStart").innerText = "Press " + keyboardMap[e.keyCode] + " to start";
     } else if(e.keyCode == triggerKey && !setKey){
         measurement();
+    } else if(e.keyCode == 18){
+        deleteLastTrigger();
     }
 }
 
@@ -179,7 +181,10 @@ function getSol(lap, rennen){
 }
 
 function measurement(atTime){
-    if(atTime == undefined && document.getElementById("lichtschranke").checked){
+    if(atTime == undefined && document.getElementById("lichtschranke").checked){ //needed for lischtschrankentriggering
+        return;
+    }
+    if(atTime != undefined && document.getElementById("local").checked){
         return;
     }
     play();
@@ -211,6 +216,16 @@ function measurement(atTime){
     
 }
 
+function deleteLastTrigger(){
+    if(jetztRennen != undefined && jetztRennen.measurements.length > 1){
+        jetztRennen.measurements.splice(-1,1);
+        lapsLeft++;
+        updateScreen();
+        calcTip(jetztRennen);
+    }
+    document.getElementById("deleteLastTriggerBtn").blur();
+}
+
 function updateScreen(){
     if(jetztRennen.runden == undefined){
         rundenÜbrig.innerText = "0";
@@ -226,6 +241,8 @@ function grayInputOut(gray){
             childChild.disabled = gray;
         }
     }
+    document.getElementById("local").disabled = gray;
+    document.getElementById("lichtschranke").disabled = gray;
 }
 
 function enterFullscreenChanged(){
