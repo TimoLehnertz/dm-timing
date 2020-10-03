@@ -2,9 +2,10 @@ function change(){
     if(!validateForm()){
         return;
     }
-    runden.value = parseInt(streckenlänge.value / rundenlänge.value);
 
-    restMeter.value = streckenlänge.value - (runden.value * rundenlänge.value);
+    runden.value = parseInt(streckenlänge.value / rundenlänge.value) + (streckenlänge.value % rundenlänge.value == 0 ? 0 : 1); //durchläufe
+    
+	restMeter.value = streckenlänge.value - ((runden.value - ((streckenlänge.value / rundenlänge.value) % 2 == 0 ? 0 : 1)) * rundenlänge.value);
 
     gesSek.value = parseInt(VorgabezeitMin.value * 60) + parseInt(VorgabezeitSek.value);
 
@@ -152,6 +153,8 @@ function calcTip(rennen){
 
     let rundenLeft = rennen.getLapsLeft();
 
+	console.log("lapsLeft For calcTip: " + rundenLeft);	
+
     let tip = timeLeft / rundenLeft;
 
     tip = tip - rennen.getLastTime();
@@ -196,9 +199,9 @@ function measurement(atTime){
     body.style.background ="green";
     
     setTimeout(()=>{body.style.background="#DDD";}, 200);
-    if(!(restMeter.value > 0 && measumentsTaken < 1)){
+    //if(!(restMeter.value > 0 && measumentsTaken < 1)){
         lapsLeft--;
-    }
+    //}
     if(atTime == undefined && document.getElementById("local").checked){//(Local keypress)
         jetztRennen.measurements.push(performance.now());
         console.log("local trigger")
