@@ -1,11 +1,16 @@
-alert("test")
+window.onload = function(){
+    console.log(document.querySelector("body"));
+    document.querySelector("body").onkeydown = keyDown;
+};
+
 function change(){
     if(!validateForm()){
         return;
     }
-    runden.value = parseInt(streckenlänge.value / rundenlänge.value);
 
-    restMeter.value = streckenlänge.value - (runden.value * rundenlänge.value);
+    runden.value = parseInt(streckenlänge.value / rundenlänge.value) + (streckenlänge.value % rundenlänge.value == 0 ? 0 : 1); //durchläufe
+    
+	restMeter.value = streckenlänge.value - ((runden.value - ((streckenlänge.value / rundenlänge.value) % 2 == 0 ? 0 : 1)) * rundenlänge.value);
 
     gesSek.value = parseInt(VorgabezeitMin.value * 60) + parseInt(VorgabezeitSek.value);
 
@@ -62,6 +67,7 @@ let enterFullscreenOnStart = true;
 
 
 function keyDown(e){
+    console.log("keydown");
     if(e.keyCode == 27){
         reset();
         setKey = false;
@@ -80,7 +86,7 @@ function keyDown(e){
 }
 
 function play() { 
-    var audio = new Audio("static/sounds/beep.wav"); 
+    var audio = new Audio("/sounds/beep.wav"); 
     audio.play(); 
 } 
 
@@ -153,6 +159,8 @@ function calcTip(rennen){
 
     let rundenLeft = rennen.getLapsLeft();
 
+	console.log("lapsLeft For calcTip: " + rundenLeft);	
+
     let tip = timeLeft / rundenLeft;
 
     tip = tip - rennen.getLastTime();
@@ -193,13 +201,13 @@ function measurement(atTime){
     if(!started){
         start();
     }
-    color = document.querySelector("main").style.background;
-    document.querySelector("main").style.background ="green";
+    color = document.querySelector("body").style.background;
+    document.querySelector("body").style.background ="green";
     
-    setTimeout(()=>{document.querySelector("main").style.background="#DDD";}, 200);
-    if(!(restMeter.value > 0 && measumentsTaken < 1)){
+    setTimeout(()=>{document.querySelector("body").style.background="#DDD";}, 200);
+    //if(!(restMeter.value > 0 && measumentsTaken < 1)){
         lapsLeft--;
-    }
+    //}
     if(atTime == undefined && document.getElementById("local").checked){//(Local keypress)
         jetztRennen.measurements.push(performance.now());
         console.log("local trigger")
@@ -338,12 +346,10 @@ function loadRace(raceId){
     savedRaceInfo.innerHTML = rennen[raceId].getInfoHtml();
     showStats(rennen[raceId], savedRaceTable);
 }
-
-document.querySelector("main").onkeydown = keyDown; 
 savedRace.onmousedown = function (){
     event.stopPropagation();
 }
-document.querySelector("main").onscroll = scroll;
+document.querySelector("body").onscroll = scroll;
 
 enterFullscreenChanged();
 
@@ -392,7 +398,7 @@ function exportTableToExcel(tableID, filename = ''){
     // Create download link element
     downloadLink = document.createElement("a");
 
-    document.querySelector("main").appendChild(downloadLink);
+    document.querySelector("body").appendChild(downloadLink);
 
     if(navigator.msSaveOrOpenBlob){
         var blob = new Blob(['\ufeff', tableHTML], {
@@ -411,7 +417,7 @@ function exportTableToExcel(tableID, filename = ''){
     }
 }
 
-onNewtriggger(function(csv){measurement(csv[csv.length - 2]);});
+//onNewtriggger(function(csv){measurement(csv[csv.length - 2]);});
 
   var keyboardMap = [
     "", // [0]
