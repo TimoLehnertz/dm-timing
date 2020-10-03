@@ -1,3 +1,4 @@
+alert("test")
 function change(){
     if(!validateForm()){
         return;
@@ -192,10 +193,10 @@ function measurement(atTime){
     if(!started){
         start();
     }
-    color = body.style.background;
-    body.style.background ="green";
+    color = document.querySelector("main").style.background;
+    document.querySelector("main").style.background ="green";
     
-    setTimeout(()=>{body.style.background="#DDD";}, 200);
+    setTimeout(()=>{document.querySelector("main").style.background="#DDD";}, 200);
     if(!(restMeter.value > 0 && measumentsTaken < 1)){
         lapsLeft--;
     }
@@ -338,11 +339,11 @@ function loadRace(raceId){
     showStats(rennen[raceId], savedRaceTable);
 }
 
-body.onkeydown = keyDown; 
+document.querySelector("main").onkeydown = keyDown; 
 savedRace.onmousedown = function (){
     event.stopPropagation();
 }
-body.onscroll = scroll;
+document.querySelector("main").onscroll = scroll;
 
 enterFullscreenChanged();
 
@@ -391,7 +392,7 @@ function exportTableToExcel(tableID, filename = ''){
     // Create download link element
     downloadLink = document.createElement("a");
 
-    document.body.appendChild(downloadLink);
+    document.querySelector("main").appendChild(downloadLink);
 
     if(navigator.msSaveOrOpenBlob){
         var blob = new Blob(['\ufeff', tableHTML], {

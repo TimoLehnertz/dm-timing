@@ -1,3 +1,8 @@
+window.onload = function(){
+    console.log(document.querySelector("body"));
+    document.querySelector("body").onkeydown = keyDown;
+};
+
 function change(){
     if(!validateForm()){
         return;
@@ -62,6 +67,7 @@ let enterFullscreenOnStart = true;
 
 
 function keyDown(e){
+    console.log("keydown");
     if(e.keyCode == 27){
         reset();
         setKey = false;
@@ -195,10 +201,10 @@ function measurement(atTime){
     if(!started){
         start();
     }
-    color = body.style.background;
-    body.style.background ="green";
+    color = document.querySelector("body").style.background;
+    document.querySelector("body").style.background ="green";
     
-    setTimeout(()=>{body.style.background="#DDD";}, 200);
+    setTimeout(()=>{document.querySelector("body").style.background="#DDD";}, 200);
     //if(!(restMeter.value > 0 && measumentsTaken < 1)){
         lapsLeft--;
     //}
@@ -340,12 +346,10 @@ function loadRace(raceId){
     savedRaceInfo.innerHTML = rennen[raceId].getInfoHtml();
     showStats(rennen[raceId], savedRaceTable);
 }
-
-body.onkeydown = keyDown; 
 savedRace.onmousedown = function (){
     event.stopPropagation();
 }
-body.onscroll = scroll;
+document.querySelector("body").onscroll = scroll;
 
 enterFullscreenChanged();
 
@@ -394,7 +398,7 @@ function exportTableToExcel(tableID, filename = ''){
     // Create download link element
     downloadLink = document.createElement("a");
 
-    document.body.appendChild(downloadLink);
+    document.querySelector("body").appendChild(downloadLink);
 
     if(navigator.msSaveOrOpenBlob){
         var blob = new Blob(['\ufeff', tableHTML], {
@@ -413,7 +417,7 @@ function exportTableToExcel(tableID, filename = ''){
     }
 }
 
-onNewtriggger(function(csv){measurement(csv[csv.length - 2]);});
+//onNewtriggger(function(csv){measurement(csv[csv.length - 2]);});
 
   var keyboardMap = [
     "", // [0]
